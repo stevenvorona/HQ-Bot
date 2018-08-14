@@ -23,3 +23,6 @@ export GOOGLE_APPLICATION_CREDENTIALS=[Path to service account key.json]
 ___
 3. Run script, hit OK on prompt for screenshot. SS everything below phone carrier info and above 'view comments'
 4. Profit
+
+![Alt Text](https://media.giphy.com/media/3o752cuysSwyUlK7mM/giphy.gif)
+###### Scott's face right now
