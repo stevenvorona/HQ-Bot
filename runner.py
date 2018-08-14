@@ -48,7 +48,7 @@ for i in answers:
             answers.remove(j)
 
 service = build("customsearch", "v1",
-            developerKey="devKey")
+            developerKey="DEVELOPER PRIVATE KEY")
 
 res = (service.cse().list(q=qa[0],cx='GOOGLE CSE CUSTOM CX').execute())
 massiveData = ""
