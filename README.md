@@ -1,6 +1,12 @@
 # HQ Bot
 An easy way to cheat the popular trivia game using Google Cloud Vision OCR.
 
+# How it works:
+1. Use Google OCR to parse out Q&A fields
+2. Create a search query in the style: Question? "answer 1"
+3. Find the number of results for that query
+4. The answer is usually the query with the most results (biggest number in output)
+
 # How to run
 1. Get credentials (API Key for Cloud Vision OCR, service account key json file)
 2. Create an automator script like so and place in the same directory
