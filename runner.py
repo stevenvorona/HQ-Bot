@@ -3,6 +3,8 @@ import os
 from bs4 import BeautifulSoup
 import pprint
 import subprocess
+import requests
+
 from googleapiclient.discovery import build
 # Imports the Google Cloud client library
 from google.cloud import vision
@@ -27,34 +29,25 @@ image = vision.types.Image(content=content)
 response = client.text_detection(image=image)
 texts = response.text_annotations
 
-qa = []
 query = ""
-for text in texts[2:]:
-    if not qa:
-        query += text.description + " "
-        if "?" in text.description:
-            qa.append(query)
-            query = ""
-    else:
-        qa.append(text.description)
+linenum = 0
+for text in texts[3:]:
+    query += text.description + " "
+    linenum+=1
+    if "?" in text.description:
+        break
 
-answers = qa[1:]
+question = query
+answers = ((texts[0].description).splitlines())[linenum-5:]
 
-#strip common words
-removeList = ['of','the', 'a', 'if', 'not','be','to','and']
-for i in answers:
-    for j in removeList:
-        if j in answers:
-            answers.remove(j)
-
-service = build("customsearch", "v1",
-            developerKey="DEVELOPER PRIVATE KEY")
-
-res = (service.cse().list(q=qa[0],cx='GOOGLE CSE CUSTOM CX').execute())
-massiveData = ""
-for key in res:
-    massiveData += str(res[key]).lower()
-
-#print massiveData
 for answer in answers:
-    print answer + ": " + str(massiveData.count(answer.lower()))
+    question += ' \"' + answer + '\"'
+    r = requests.get("https://www.google.com/search", params={'q':question})
+
+    data = BeautifulSoup(r.text, "lxml")
+    res = data.find("div", {"id": "resultStats"})
+    count = res.text
+    count = (count).replace('About ', '')
+    count = (count).replace('results', '')
+    print answer + ": " + count
+    question = query
