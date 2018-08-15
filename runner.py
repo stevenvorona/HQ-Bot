@@ -29,16 +29,19 @@ image = vision.types.Image(content=content)
 response = client.text_detection(image=image)
 texts = response.text_annotations
 
+
 query = ""
 linenum = 0
-for text in texts[3:]:
-    query += text.description + " "
+realTexts = (texts[0].description).splitlines()[2:]
+
+for text in realTexts:
+    query += text + " "
     linenum+=1
-    if "?" in text.description:
+    if "?" in text:
         break
 
 question = query
-answers = ((texts[0].description).splitlines())[linenum-5:]
+answers = realTexts[linenum:]
 
 for answer in answers:
     question += ' \"' + answer + '\"'
